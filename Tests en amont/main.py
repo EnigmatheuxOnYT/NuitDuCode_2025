@@ -3,8 +3,8 @@
 
 import pyxel
 
-BLOCK_SIDE = 8#px
-BLOCK_SIZE = (BLOCK_SIDE,BLOCK_SIDE)
+TILE_SIDE = 8#px
+TILE_SIZE = (TILE_SIDE,TILE_SIDE)
 
 class Main:
     def __init__(self):
@@ -12,7 +12,7 @@ class Main:
         pyxel.mouse(True)
         self.x=0
         pyxel.load('../my_resource.pyxres')
-        self.blocks = [Block(i,0) for i in range(16)]
+        self.tiles = [Tile(((i*TILE_SIDE)%256,(i*TILE_SIDE)//256),0) for i in range(16)]
         self.offset = 0
 
     
@@ -22,39 +22,43 @@ class Main:
 
 
     def draw(self):
-        pyxel.cls(0)
+        pyxel.cls(1)
         #pyxel.rect(self.x,0,8,8,9)
         #self.placeholderblock.blits((0,0),25)
-        for y in range(pyxel.height//BLOCK_SIDE):
-            for x in range(pyxel.width//BLOCK_SIDE):
-                self.draw_block(9,(x*BLOCK_SIDE,y*BLOCK_SIDE))
+        for y in range(pyxel.height//TILE_SIDE):
+            for x in range(pyxel.width//TILE_SIDE):
+                self.draw_tile(9,(x*TILE_SIDE,y*TILE_SIDE))
         #self.testscreen()
     
-    def draw_block(self,id:int,pos:tuple)->None:self.blocks[id].blit(pos)
+    def draw_tile(self,id:int,pos:tuple)->None:self.tiles[id].blit(pos)
 
     def testscreen(self):
-        for i in range(len(self.blocks)):
-            self.draw_block(i,self.blocks[i].pos)
+        for i in range(len(self.tiles)):
+            self.draw_tile(i,self.tiles[i].pos)
 
     def run(self):pyxel.run(self.update,self.draw)
 
 
-class Block:
-    def __init__(self,id:int,colkey:int|None=None):
-        self.id = id
-        self.pos = ((id*BLOCK_SIDE)%256,(id*BLOCK_SIDE)//256)
+class Tile:
+    instances = []
+    def __init__(self,pos,colkey:int|None=None):
+        self.pos = pos
         self.colkey = colkey
+        Tile.instances.append(self)
+        self.id = len(Tile.instances)
     
     def blit(self,pos:tuple):
-        if self.colkey:
-            pyxel.blt(pos[0],pos[1],0,self.pos[0],self.pos[1],BLOCK_SIDE,BLOCK_SIDE,self.colkey)
+        if self.colkey!=None:
+            pyxel.blt(pos[0],pos[1],0,self.pos[0],self.pos[1],TILE_SIDE,TILE_SIDE,self.colkey)
         else:
-            pyxel.blt(pos[0],pos[1],0,self.pos[0],self.pos[1],BLOCK_SIDE,BLOCK_SIDE)
+            pyxel.blt(pos[0],pos[1],0,self.pos[0],self.pos[1],TILE_SIDE,TILE_SIDE)
 
-    def blits(self,pos,amount):
-        for i in range(amount):
-            self.blit((i*BLOCK_SIDE+pos[0],pos[1]))
-
+class Entity:
+    instances = []
+    def __init__(self,pos:tuple,size:tuple):
+        self.pos = pos
+        Entity.instances.append(self)
+        self.id = len(Entity.instances)
 
 class MapManager:
     def __init__(self):
@@ -63,3 +67,6 @@ class MapManager:
 if __name__ == '__main__':
     game = Main()
     game.run()
+    #Tile((17,0))
+    #print(Tile.instances[0].pos)
+    pass
