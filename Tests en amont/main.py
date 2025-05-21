@@ -27,7 +27,7 @@ class Main:
         #self.placeholderblock.blits((0,0),25)
         for y in range(pyxel.height//TILE_SIDE):
             for x in range(pyxel.width//TILE_SIDE):
-                self.draw_tile(9,(x*TILE_SIDE,y*TILE_SIDE))
+                self.draw_tile(0,(x*TILE_SIDE,y*TILE_SIDE))
         #self.testscreen()
     
     def draw_tile(self,id:int,pos:tuple)->None:self.tiles[id].blit(pos)
