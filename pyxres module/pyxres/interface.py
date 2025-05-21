@@ -9,7 +9,6 @@ class Interface:
     def __init__(self,data):
         self.handle_data(data)
         self.get_colors()
-        self.get_rects()
         self.running = True
         #print(data)
         #print(self.images)
