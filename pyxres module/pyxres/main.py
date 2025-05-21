@@ -4,7 +4,7 @@ import os
 from typing import Any
 from interface import Interface
 
-extracted_file_directory = "pyxres/extractor/"
+extracted_file_directory = "pyxres module/extractor/"
 extracted_file_name = "pyxel_resource.toml"
 
 class extractor:
@@ -64,10 +64,10 @@ class pyxres:
         
 
 if __name__ == "__main__":
-    file_name = "test1"
+    file_name = "pyxres module/test1"
     file = f"{file_name}.pyxres"
     toml_file = f"pyxres/extractor/pyxel_resource.toml"
-    #Pyxres = pyxres()
-    #Pyxres.init_file(file)
-    data = extractor.extract_data(file)
-    print(data['images'])
+    Pyxres = pyxres()
+    Pyxres.init_file(file)
+    #data = extractor.extract_data(file)
+    #print(data['tilemaps'])
