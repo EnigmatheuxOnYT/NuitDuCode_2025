@@ -69,5 +69,6 @@ if __name__ == "__main__":
     toml_file = f"pyxres/extractor/pyxel_resource.toml"
     Pyxres = pyxres()
     Pyxres.init_file(file)
+    Pyxres.start()
     #data = extractor.extract_data(file)
     #print(data['tilemaps'])

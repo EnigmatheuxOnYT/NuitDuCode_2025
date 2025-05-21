@@ -1,4 +1,3 @@
-import pygame
 import pyxel
 
 INTERFACE_WIDTH = 1280
@@ -12,13 +11,13 @@ class Interface:
         self.get_colors()
         self.get_rects()
         self.running = True
-        print(data)
+        #print(data)
         #print(self.images)
         #print(self.tilemaps)
-        print(self.save_data())
-        print(data==self.save_data())
-        #self.screen = pygame.display.set_mode(INTERFACE_SIZE)
-        #pygame.display.set_caption("Better pyxres editor")
+        #print(self.save_data())
+        #print(data==self.save_data())
+        pyxel.init(INTERFACE_WIDTH,INTERFACE_HEIGHT,title="Better pyxres editor",fps=FPS,quit_key=pyxel.KEY_Q)
+        pyxel.mouse(True)
 
     
     def get_colors(self):
@@ -90,15 +89,6 @@ class Interface:
                     tilemaps_data[tmno].append(row+[0])
             tilemaps_data[imageno].append([0])
         return images_data,tilemaps_data
-
-    
-    def get_rects(self):pass
-        #self.window_tilemap_rect = pygame.Rect(50,50,512,512)
-        #self.window_tilemap_surf = pygame.Surface((512,512))
-        #self.window_tilemap_surf.fill("black")
-        #self.window_image_rect = pygame.Rect(600,50,64,64)
-        #self.window_image_surf = pygame.Surface((256,256))
-        #self.window_image_surf.fill("black")
     
     def save_data(self):
         saved_data = self.saved_data
@@ -111,26 +101,16 @@ class Interface:
 
     
     def handle_input(self):pass
-        #for event in pygame.event.get():
-        #    if event.type == pygame.QUIT:
-        #        self.running = False
     
-    def update(self):pass
+    def update(self):
+        self.handle_input()
 
-    def draw(self):pass
-        #self.screen.fill((25,25,25))
-        #self.screen.blit(self.window_tilemap_surf,self.window_tilemap_rect)
-        #self.screen.blit(self.window_image_surf,self.window_image_rect)
-        #pygame.display.flip()
+    def draw(self):
+        pyxel.cls(0)
 
 
     def run(self):
-        while self.running:
-            self.handle_input()
-            self.update()
-            self.draw()
-            #pygame.time.Clock().tick(FPS)
-        #pygame.quit()
-        return self.data
+        pyxel.run(self.update,self.draw)
+        return self.saved_data
     
     def check_tiles():pass
