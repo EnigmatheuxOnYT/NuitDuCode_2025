@@ -8,17 +8,12 @@ FPS = 60
 class Interface:
     def __init__(self,data):
         self.handle_data(data)
-        self.get_colors()
-        self.running = True
         #print(data)
         #print(self.images)
         #print(self.tilemaps)
         #print(self.save_data())
         #print(data==self.save_data())
-        pyxel.init(INTERFACE_WIDTH,INTERFACE_HEIGHT,title="Better pyxres editor",fps=FPS,quit_key=pyxel.KEY_Q)
-        pyxel.mouse(True)
 
-    
     def get_colors(self):
         self.colors = [(0,0,0),
                        (43,51,95),
@@ -97,6 +92,11 @@ class Interface:
         for tmno in range(len(tilemaps_data)):
             saved_data['tilemaps'][tmno]['data'] = tilemaps_data[tmno]
         return saved_data
+    
+    def load_tileset(self,tiles,hitboxes,entities):
+        self.tiles = tiles
+        self.hitboxes = hitboxes
+        self.entities = entities
 
     
     def handle_input(self):pass
@@ -109,6 +109,8 @@ class Interface:
 
 
     def run(self):
+        pyxel.init(INTERFACE_WIDTH,INTERFACE_HEIGHT,title="Better pyxres editor",fps=FPS,quit_key=pyxel.KEY_Q)
+        pyxel.mouse(True)
         pyxel.run(self.update,self.draw)
         return self.saved_data
     

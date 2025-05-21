@@ -59,6 +59,10 @@ class pyxres:
         self.entities = entities
     
     def start(self):
+        try:
+            self.interface.load_tileset(self.tiles,self.hitboxes,self.entities)
+        except:
+            raise AttributeError("You have to execute the set_tileset function before starting modifs.")
         self.data = self.interface.run()
         self.filebuilder.save_data(self.data,self.file)
         
@@ -69,6 +73,7 @@ if __name__ == "__main__":
     toml_file = f"pyxres/extractor/pyxel_resource.toml"
     Pyxres = pyxres()
     Pyxres.init_file(file)
+    Pyxres.set_tileset([],[],[])
     Pyxres.start()
     #data = extractor.extract_data(file)
     #print(data['tilemaps'])
