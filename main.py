@@ -104,6 +104,7 @@ class Ennemy(Entity):
     def destroy(self):
         Ennemy.instances.remove(self)
         Ennemy.killed+=1
+        Explosion(self.x,self.y)
     
     def update(self):
         self.move(0,self.speed)
@@ -132,6 +133,27 @@ class Bullet(Entity):
     def destroy (self):
         Bullet.instances.remove(self)
 
+class Explosion:
+    instances = []
+    DELAY = 3
+    def __init__(self,x,y):
+        self.x,self.y = x,y
+        self.index = 0
+        self.delay = 0
+        Explosion.instances.append(self)
+    
+    def update(self):
+        if self.delay == Explosion.DELAY:
+            self.delay = 0
+            if self.index >=5:
+                Explosion.instances.remove(self)
+            else:
+                self.index+=1
+        else:
+            self.delay+=1
+        
+    def draw(self):
+        px.blt(self.x,self.y,1,self.index*16,16,16,16,0)
 
 vague1 = [Ennemy(px.rndi(1,3),px.rndi(0,240)) for _ in range(15)]
 vagues = [None,vague1]
@@ -173,6 +195,8 @@ class Main:
                 Bullet(False,(ennemy.x+(ennemy.width//2)-4,ennemy.y+ennemy.height))
         for bullet in Bullet.instances:
             bullet.update()
+        for explosion in Explosion.instances:
+            explosion.update()
     
     def init_waves(self):
         self.waves = []
@@ -205,6 +229,8 @@ class Main:
             ennemy.draw()
         for bullet in Bullet.instances:
             bullet.draw()
+        for explosion in Explosion.instances:
+            explosion.draw()
         self.player.draw()
         px.text(0,0,"vies : "+str(self.player.pv),0)
         px.text(0,10,"score : "+str(Ennemy.killed),0)
