@@ -35,7 +35,7 @@ class Player(Entity):
         self.width,self.height = 16,32
         sprite = Sprite(0,0,0,self.width,self.height)
         super().__init__(128,256,16,32,5,sprite)
-        self.speed = 3
+        self.speed = 2
 
 class EnnemyType:
     instances = []
