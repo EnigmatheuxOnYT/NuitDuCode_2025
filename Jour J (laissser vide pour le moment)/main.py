@@ -5,22 +5,54 @@ class Sprite:
         self.img,self.x,self.y,self.width,self.height,self.colkey = img,x,y,w,h,colkey
     
     def draw(self,x,y):
-        px.blt(x,y,self.img,self.x,self.y,self.width,self.height,self.colkey,)
+        px.blt(x,y,self.img,self.x,self.y,self.width,self.height,self.colkey)
 
-class Player:
-    def __init__(self):
-        self.x,self.y=128,256
-        self.pos = (self.x,self.y)
-        self.maxpv = 5
-        self.pv = 5
-        self.spritepos = (0,0,0)
-        self.spritesize = (16,16)
+class Entity:
+    def __init__(self,x:int,y:int,w:int,h:int,maxpv:int,sprite:Sprite):
+        self.x,self.y=x,y
+        self.width,self.height = w,h
+        self.pv,self.maxpv = maxpv
+        self.sprite = sprite
     
+    @property
+    def pos(self):return (self.x,self.y)
+    @property
+    def size(self):return (self.width,self.height)
+
+    def move(self,modx,mody):
+        self.x+=modx
+        self.y+=mody
+    
+    def setpos (self,x,y):
+        self.y,self.y = x,y
+
     def draw(self):
-        px.bltm()
+        self.sprite.draw(self.x,self.y)
+
+
+class Player(Entity):
+    def __init__(self):
+        sprite = Sprite(0,0,0,self.width,self.height)
+        super().__init__(128,256,16,32,5,sprite)
+
+class Ennemy(Entity):
+    instances = []
+    def __init__ (self,maxpv,dmg,speed,spritepos):
+        sprite = Sprite(1,spritepos[0],spritepos[1])
+        super().__init__(0,0,16,16,maxpv,sprite)
+        self.dmg = dmg
+        self.speed = speed
+        Ennemy.instances.append(self)
+        self.id = len(Ennemy.instances)
+
 
 class Main:
     def __init__(self):
+        self.player = Player()
+        Ennemy(1,3,3,(0,0))
+        Ennemy(2,2,2,(0,0))
+        Ennemy(3,1,1,(0,0))
+        self.ennemies = Ennemy.instances
         self.vague = 0
     
     def handle_input(self):
