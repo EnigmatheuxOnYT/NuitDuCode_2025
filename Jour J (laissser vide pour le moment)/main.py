@@ -35,18 +35,24 @@ class Player(Entity):
         sprite = Sprite(0,0,0,self.width,self.height)
         super().__init__(128,256,16,32,5,sprite)
 
-class Ennemi(Entity):
+class Ennemy(Entity):
     instances = []
-    def __init__ (self,maxpv,dmg,speed,sprite):
+    def __init__ (self,maxpv,dmg,speed,spritepos):
+        sprite = Sprite(1,spritepos[0],spritepos[1])
         super().__init__(0,0,16,16,maxpv,sprite)
         self.dmg = dmg
         self.speed = speed
-        Ennemi.instances.append(self)
-        self.id = len(Ennemi.instances)
+        Ennemy.instances.append(self)
+        self.id = len(Ennemy.instances)
 
 
 class Main:
     def __init__(self):
+        self.player = Player()
+        Ennemy(1,3,3,(0,0))
+        Ennemy(2,2,2,(0,0))
+        Ennemy(3,1,1,(0,0))
+        self.ennemies = Ennemy.instances
         self.vague = 0
     
     def handle_input(self):
