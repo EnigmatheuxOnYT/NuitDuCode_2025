@@ -122,6 +122,8 @@ class Ennemy(Entity):
                 break
         if self.y>256:
             Ennemy.instances.remove(self)
+        if self.y>0 and px.rndi(0,200) == 0:
+            Bullet(False,(self.x+(self.width//2)-4,self.y+self.height))
 
 class ObstacleType:
     instances = []
@@ -239,10 +241,7 @@ class Main:
             self.handle_input()
             self.player.update()
             for ennemy in Ennemy.instances:
-                #print(ennemy.pos,self.player.pos)
                 ennemy.update()
-                if ennemy.y>0 and px.rndi(0,200) == 0:
-                    Bullet(False,(ennemy.x+(ennemy.width//2)-4,ennemy.y+ennemy.height))
             for bullet in Bullet.instances:
                 bullet.update()
             for explosion in Explosion.instances:
