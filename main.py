@@ -289,18 +289,18 @@ class Main:
             self.intro2()
         else:
             self.draw_waves()
-            for ennemy in Ennemy.instances:
-                ennemy.draw()
             for bullet in Bullet.instances:
                 bullet.draw()
-            for explosion in Explosion.instances:
-                explosion.draw()
             for obstacle in Obstacle.instances:
                 obstacle.draw()
+            for ennemy in Ennemy.instances:
+                ennemy.draw()
+            for explosion in Explosion.instances:
+                explosion.draw()
             self.player.draw()
             px.text(0,0,"Vies : "+str(self.player.pv),0)
             px.text(0,10,"Score : "+str(Ennemy.killed),0)
-            px.text(0,20,"Round : "+str(self.vagueno),0)
+            px.text(0,20,"Vague : "+str(self.vagueno),0)
 
 
     def run (self):
