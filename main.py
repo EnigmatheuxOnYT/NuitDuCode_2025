@@ -298,9 +298,9 @@ class Main:
             for explosion in Explosion.instances:
                 explosion.draw()
             self.player.draw()
-            px.text(0,0,"Vies : "+str(self.player.pv),0)
-            px.text(0,10,"Score : "+str(Ennemy.killed),0)
-            px.text(0,20,"Vague : "+str(self.vagueno),0)
+            px.text(5,5,"Vies : "+str(self.player.pv),0)
+            px.text(50,5,"Score : "+str(Ennemy.killed),0)
+            px.text(100,5,"Vague : "+str(self.vagueno),0)
 
 
     def run (self):
