@@ -215,14 +215,14 @@ class Main:
     def current_vague(self):return vagues[self.vagueno]
 
     def next_vague(self):
-        if self.vagueno <=len(vagues)-1:
+        if self.vagueno < len(vagues)-1:
             self.vagueno +=1
             Ennemy.instances = self.current_vague
             Ennemy.speedmod+=1
             Bullet.speed +=1
             self.player.pv+=5
         else:
-            print("Victoire ! Votre score est : "+Ennemy.killed)
+            print("Victoire ! Votre score est : "+str(Ennemy.killed+self.player.pv))
             px.quit()
     
     def intro(self):
