@@ -85,6 +85,49 @@ class Ennemy(Entity):
     instances = []
     killed = 0
     y = -20
+    speedmod = 0
+    def __init__ (self,type:int,startx:tuple,resetround:bool=False):
+        if resetround:
+            Ennemy.y = -20
+        else:
+            Ennemy.y -= 70
+        self.typeno = type
+        self.type:EnnemyType = EnnemyType.instances[type-1]
+        super().__init__(startx,Ennemy.y,16,16,self.type.maxpv,self.type.sprite)
+        self.speed = self.type.speed
+    
+    def damage (self,damage):
+        self.pv-=damage
+        if self.pv<=0:
+            self.destroy()
+    
+    def destroy(self):
+        Ennemy.instances.remove(self)
+        Ennemy.killed+=1
+        Explosion(self.x,self.y)
+    
+    def update(self):
+        self.move(0,self.speed+Ennemy.speedmod)
+        for bullet in Bullet.instances:
+            if bullet.friendly and self.check_collision(bullet):
+                self.damage(1)
+                bullet.destroy()
+                break
+        if self.y>256:
+            Ennemy.instances.remove(self)
+
+class ObstacleType:
+    instances = []
+    def __init__(self,spritepos):
+        self.sprite = Sprite(0,spritepos[0],spritepos[1])
+        ObstacleType.instances.append(self)
+    
+ObstacleType((0,48))
+ObstacleType((0,64))
+
+class Obstacle(Entity):
+    instances = []
+    y = -20
     def __init__ (self,type:int,startx:tuple,resetround:bool=False):
         if resetround:
             Ennemy.y = -20
@@ -103,16 +146,9 @@ class Ennemy(Entity):
     
     def destroy(self):
         Ennemy.instances.remove(self)
-        Ennemy.killed+=1
-        Explosion(self.x,self.y)
     
     def update(self):
-        self.move(0,self.speed)
-        for bullet in Bullet.instances:
-            if bullet.friendly and self.check_collision(bullet):
-                self.damage(1)
-                bullet.destroy()
-                break
+        self.move(0,1)
 
 class Bullet(Entity):
     instances = []
@@ -155,14 +191,16 @@ class Explosion:
     def draw(self):
         px.blt(self.x,self.y,1,self.index*16,16,16,16,0)
 
-vague1 = [Ennemy(px.rndi(1,3),px.rndi(0,240)) for _ in range(15)]
-vagues = [None,vague1]
+vague1 = [Ennemy(px.rndi(1,3),px.rndi(0,240)) for _ in range(15)]+[Ennemy(px.rndi(1,3),px.rndi(0,240),True)]
+vague2 = [Ennemy(px.rndi(1,3),px.rndi(0,240)) for _ in range(30)]+[Ennemy(px.rndi(1,3),px.rndi(0,240),True)]
+vagues = [None,vague1,vague2]
 
 class Main:
     def __init__(self):
         self.player = Player()
         self.ennemytypes = EnnemyType.instances
         self.vagueno = 1
+        Ennemy.instances = self.current_vague
     
     @property
     def current_vague(self):return vagues[self.vagueno]
@@ -197,6 +235,10 @@ class Main:
             bullet.update()
         for explosion in Explosion.instances:
             explosion.update()
+        if len(Ennemy.instances) == 0:
+            self.vagueno +=1
+            Ennemy.instances = self.current_vague
+            Ennemy.speedmod+=1
     
     def init_waves(self):
         self.waves = []
