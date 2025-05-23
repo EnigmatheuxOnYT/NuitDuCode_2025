@@ -34,6 +34,7 @@ class Player(Entity):
     def __init__(self):
         sprite = Sprite(0,0,0,self.width,self.height)
         super().__init__(128,256,16,32,5,sprite)
+        self.speed = 3
 
 class EnnemyType:
     instances = []
@@ -52,17 +53,34 @@ class Ennemy(Entity):
         self.typeno = type
         self.type:EnnemyType = EnnemyType.instances[type-1]
         super().__init__(startx,0,16,16,self.type.maxpv,self.type.sprite)
+        Ennemy.instances.append(self)
 
 vague1 = [Ennemy(2,128)]
+vagues = [None,vague1]
 
 class Main:
     def __init__(self):
         self.player = Player()
         self.ennemytypes = EnnemyType.instances
-        self.vague = 1
+        self.vagueno = 1
+    
+    @property
+    def current_vague(self):return vagues[self.vagueno]
+    
+    def start_wave(self):pass
+
+
     
     def handle_input(self):
-        pass
+        if px.btn(px.KEY_Z) or px.btn(px.KEY_UP):
+            self.player.move(0,self.player.speed)
+        if px.btn(px.KEY_S) or px.btn(px.KEY_DOWN):
+            self.player.move(0,-self.player.speed)
+        if px.btn(px.KEY_Q) or px.btn(px.KEY_LEFT):
+            self.player.move(-self.player.speed,0)
+        if px.btn(px.KEY_D) or px.btn(px.KEY_RIGHT):
+            self.player.move(self.player.speed,0)
+
 
     def update (self):
         self.handle_input()
@@ -70,7 +88,7 @@ class Main:
     def draw (self):
         px.cls(6)
         self.player.draw()
-        for ennemy in self.ennemies:
+        for ennemy in Ennemy.instances:
             ennemy.draw()
 
     def run (self):
