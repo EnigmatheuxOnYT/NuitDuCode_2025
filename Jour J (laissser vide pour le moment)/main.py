@@ -11,7 +11,7 @@ class Entity:
     def __init__(self,x:int,y:int,w:int,h:int,maxpv:int,sprite:Sprite):
         self.x,self.y=x,y
         self.width,self.height = w,h
-        self.pv,self.maxpv = maxpv
+        self.pv,self.maxpv = maxpv,maxpv
         self.sprite = sprite
     
     @property
@@ -32,6 +32,7 @@ class Entity:
 
 class Player(Entity):
     def __init__(self):
+        self.width,self.height = 16,32
         sprite = Sprite(0,0,0,self.width,self.height)
         super().__init__(128,256,16,32,5,sprite)
         self.speed = 3
@@ -43,9 +44,9 @@ class EnnemyType:
         self.sprite = Sprite(0,spritepos[0],spritepos[1])
         EnnemyType.instances.append(self)
 
-EnnemyType(2,2,2,(0,16))
-EnnemyType(3,1,1,(0,32))
-EnnemyType(1,3,3,(0,48))
+EnnemyType(2,2,2,0,(0,16))
+EnnemyType(3,1,1,0,(0,32))
+EnnemyType(1,3,3,0,(0,48))
 
 class Ennemy(Entity):
     instances = []
@@ -73,9 +74,9 @@ class Main:
     
     def handle_input(self):
         if px.btn(px.KEY_Z) or px.btn(px.KEY_UP):
-            self.player.move(0,self.player.speed)
-        if px.btn(px.KEY_S) or px.btn(px.KEY_DOWN):
             self.player.move(0,-self.player.speed)
+        if px.btn(px.KEY_S) or px.btn(px.KEY_DOWN):
+            self.player.move(0,self.player.speed)
         if px.btn(px.KEY_Q) or px.btn(px.KEY_LEFT):
             self.player.move(-self.player.speed,0)
         if px.btn(px.KEY_D) or px.btn(px.KEY_RIGHT):
