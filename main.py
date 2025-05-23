@@ -126,6 +126,8 @@ class Bullet(Entity):
             self.y-=3
         else:
             self.y+=3
+        if self.y>256 or self.y<-8:
+            self.destroy()
     
     def destroy (self):
         Bullet.instances.remove(self)
@@ -193,9 +195,9 @@ class Main:
 
     
     def draw_waves(self):
-        for i in range(16):
+        for i in range(17):
             for j in range(16):
-                px.blt(j*16,(i*16)-self.wave_offset,1,self.waves[i][j],0,16,16)
+                px.blt(j*16,((i*16)+self.wave_offset-16),1,self.waves[i][j],0,16,16)
    
     def draw (self):
         self.draw_waves()
