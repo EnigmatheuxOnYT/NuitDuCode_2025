@@ -1,5 +1,7 @@
 import pyxel as px
 
+SCORE = 0
+
 class Sprite:
     def __init__(self,img,x,y,w=16,h=16,colkey=6):
         self.img,self.x,self.y,self.width,self.height,self.colkey = img,x,y,w,h,colkey
@@ -51,6 +53,22 @@ class Player(Entity):
             self.y=224
         elif self.y<0:
             self.y=0
+    
+    def update(self):
+        for ennemy in Ennemy.instances:
+            if self.check_collision(ennemy):
+                self.damage(1)
+                ennemy.destroy()
+        for bullet in Bullet.instances:
+            if (not bullet.friendly) and self.check_collision(bullet):
+                self.damage(1)
+                bullet.destroy()
+    
+    def damage(self,amount):
+        self.pv-=amount
+        if self.pv<=0:
+            px.quit()
+
 
 class EnnemyType:
     instances = []
@@ -60,15 +78,21 @@ class EnnemyType:
         EnnemyType.instances.append(self)
 
 EnnemyType(2,2,2,0,(16,0))
-EnnemyType(3,1,1,0,(32,0))
-EnnemyType(1,3,3,0,(48,0))
+EnnemyType(3,2,1,0,(32,0))
+EnnemyType(1,3,2,0,(48,0))
 
 class Ennemy(Entity):
     instances = []
-    def __init__ (self,type:int,startx:tuple):
+    killed = 0
+    y = -20
+    def __init__ (self,type:int,startx:tuple,resetround:bool=False):
+        if resetround:
+            Ennemy.y = -20
+        else:
+            Ennemy.y -= 70
         self.typeno = type
         self.type:EnnemyType = EnnemyType.instances[type-1]
-        super().__init__(startx,0,16,16,self.type.maxpv,self.type.sprite)
+        super().__init__(startx,Ennemy.y,16,16,self.type.maxpv,self.type.sprite)
         Ennemy.instances.append(self)
         self.speed = self.type.speed
     
@@ -79,6 +103,7 @@ class Ennemy(Entity):
     
     def destroy(self):
         Ennemy.instances.remove(self)
+        Ennemy.killed+=1
     
     def update(self):
         self.move(0,self.speed)
@@ -103,7 +128,7 @@ class Bullet(Entity):
         Bullet.instances.remove(self)
 
 
-vague1 = [Ennemy(1,128),Ennemy(2,128)]
+vague1 = [Ennemy(px.rndi(1,3),px.rndi(0,240)) for _ in range(15)]
 vagues = [None,vague1]
 
 class Main:
@@ -133,26 +158,55 @@ class Main:
 
 
     def update (self):
+        self.update_waves()
         self.handle_input()
+        self.player.update()
         for ennemy in Ennemy.instances:
             #print(ennemy.pos,self.player.pos)
             ennemy.update()
-            if self.player.check_collision(ennemy):
-                print("1")
         for bullet in Bullet.instances:
             bullet.update()
+    
+    def init_waves(self):
+        self.waves = []
+        for i in range(16):
+            self.waves.append([])
+            for j in range(16):
+                wavex = px.rndi(0,3)*16
+                self.waves[i].append(wavex)
+        self.wave_offset=0
+    
+    def update_waves(self):
+        self.wave_offset+=1
+        if self.wave_offset>=16:
+            self.wave_offset-=16
+            self.waves.pop()
+            newrow=[]
+            for i in range(16):
+                newrow.append(px.rndi(0,3)*16)
+            self.waves.insert(0,newrow)
+
+    
+    def draw_waves(self):
+        for i in range(16):
+            for j in range(16):
+                px.blt(i*16,j*16,1,self.waves[i][j],0,16,16)
 
     def draw (self):
-        px.cls(6)
-        self.player.draw()
+        self.draw_waves()
         for ennemy in Ennemy.instances:
             ennemy.draw()
         for bullet in Bullet.instances:
             bullet.draw()
+        self.player.draw()
+        px.text(0,0,"vies : "+str(self.player.pv),0)
+        px.text(0,10,"score : "+str(Ennemy.killed),0)
+
 
     def run (self):
         px.init(256,256,title="Nom",fps=60,quit_key=px.KEY_Q)
         px.load("theme.pyxres")
+        self.init_waves()
         px.run(self.update,self.draw)
         px.quit()
 
