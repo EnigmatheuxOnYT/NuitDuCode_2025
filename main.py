@@ -117,7 +117,7 @@ class Bullet(Entity):
     instances = []
     def __init__(self,friendly,pos):
         self.friendly = friendly
-        sprite = Sprite(0,0,32,8,8)
+        sprite = Sprite(0,8,32,8,8)
         super().__init__(pos[0],pos[1],8,8,1,sprite)
         Bullet.instances.append(self)
     
@@ -167,14 +167,14 @@ class Main:
         for ennemy in Ennemy.instances:
             #print(ennemy.pos,self.player.pos)
             ennemy.update()
-            if ennemy.y>0 and px.rndi(0,60) == 0:
+            if ennemy.y>0 and px.rndi(0,200) == 0:
                 Bullet(False,(ennemy.x+(ennemy.width//2)-4,ennemy.y+ennemy.height))
         for bullet in Bullet.instances:
             bullet.update()
     
     def init_waves(self):
         self.waves = []
-        for i in range(16):
+        for i in range(17):
             self.waves.append([])
             for j in range(16):
                 wavex = px.rndi(0,2)*16
@@ -195,8 +195,8 @@ class Main:
     def draw_waves(self):
         for i in range(16):
             for j in range(16):
-                px.blt(j*16,(i*16)+self.wave_offset,1,self.waves[i][j],0,16,16)
-  
+                px.blt(j*16,(i*16)-self.wave_offset,1,self.waves[i][j],0,16,16)
+   
     def draw (self):
         self.draw_waves()
         for ennemy in Ennemy.instances:
