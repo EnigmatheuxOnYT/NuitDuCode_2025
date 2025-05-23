@@ -1,6 +1,5 @@
 import pyxel as px
 
-SCORE = 0
 
 class Sprite:
     def __init__(self,img,x,y,w=16,h=16,colkey=6):
@@ -32,7 +31,7 @@ class Entity:
         self.sprite.draw(self.x,self.y)
     
     def check_collision(self,entity):
-        return (self.x+self.width>entity.x and self.x<entity.x+entity.width and self.y+self.width>entity.y and self.y<entity.y+entity.width)
+        return (self.x+self.width>entity.x and self.x<entity.x+entity.width and self.y+self.height>entity.y and self.y<entity.y+entity.height)
 
 
 class Player(Entity):
@@ -304,7 +303,7 @@ class Main:
 
 
     def run (self):
-        px.init(256,256,title="Pixel Armada",fps=60,quit_key=px.KEY_Q)
+        px.init(256,256,title="Pixel Armada",fps=60,quit_key=px.KEY_ESCAPE)
         px.load("theme.pyxres")
         self.init_waves()
         px.run(self.update,self.draw)
