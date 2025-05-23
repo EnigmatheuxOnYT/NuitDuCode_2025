@@ -195,8 +195,8 @@ class Main:
     def draw_waves(self):
         for i in range(16):
             for j in range(16):
-                px.blt(i*16,j*16,1,self.waves[i][j],0,16,16)
-
+                px.blt(j*16,(i*16)+self.wave_offset,1,self.waves[i][j],0,16,16)
+  
     def draw (self):
         self.draw_waves()
         for ennemy in Ennemy.instances:
