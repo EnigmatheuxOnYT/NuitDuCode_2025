@@ -50,7 +50,7 @@ class Player(Entity):
         if self.y>224:
             self.y=224
         elif self.y<0:
-            self.y = 0
+            self.y=0
 
 class EnnemyType:
     instances = []
@@ -70,6 +70,7 @@ class Ennemy(Entity):
         self.type:EnnemyType = EnnemyType.instances[type-1]
         super().__init__(startx,0,16,16,self.type.maxpv,self.type.sprite)
         Ennemy.instances.append(self)
+        self.speed = self.type.speed
     
     def damage (self,damage):
         self.pv-=damage
@@ -80,21 +81,29 @@ class Ennemy(Entity):
         Ennemy.instances.remove(self)
     
     def update(self):
-        self.move(self.speed,0)
+        self.move(0,self.speed)
+        for bullet in Bullet.instances:
+            if bullet.friendly and self.check_collision(bullet):
+                self.damage(1)
+                bullet.destroy()
+                break
 
 class Bullet(Entity):
     instances = []
     def __init__(self,friendly,pos):
         self.friendly = friendly
         sprite = Sprite(0,0,32,8,8)
-        super().__init__(0,32,8,8,1,sprite)
+        super().__init__(pos[0],pos[1],8,8,1,sprite)
         Bullet.instances.append(self)
     
     def update (self):
         self.y-=3
+    
+    def destroy (self):
+        Bullet.instances.remove(self)
 
 
-vague1 = [Ennemy(1,128)]
+vague1 = [Ennemy(1,128),Ennemy(2,128)]
 vagues = [None,vague1]
 
 class Main:
@@ -120,13 +129,14 @@ class Main:
         if px.btn(px.KEY_D) or px.btn(px.KEY_RIGHT):
             self.player.move(self.player.speed,0)
         if px.btnp(px.KEY_SPACE):
-            print("E")
+            Bullet(True,(self.player.x+4,self.player.y-8))
 
 
     def update (self):
         self.handle_input()
         for ennemy in Ennemy.instances:
             #print(ennemy.pos,self.player.pos)
+            ennemy.update()
             if self.player.check_collision(ennemy):
                 print("1")
         for bullet in Bullet.instances:
@@ -137,6 +147,8 @@ class Main:
         self.player.draw()
         for ennemy in Ennemy.instances:
             ennemy.draw()
+        for bullet in Bullet.instances:
+            bullet.draw()
 
     def run (self):
         px.init(256,256,title="Nom",fps=60,quit_key=px.KEY_Q)
