@@ -36,6 +36,7 @@ class Entity:
 
 
 class Player(Entity):
+    dead=False
     def __init__(self):
         self.width,self.height = 16,32
         sprite = Sprite(0,0,0,self.width,self.height)
@@ -71,6 +72,9 @@ class Player(Entity):
     def damage(self,amount):
         self.pv-=amount
         if self.pv<=0:
+            Player.dead=True
+            Explosion(self.x,self.y)
+            print("Votre score : ",Ennemy.killed)
             px.quit()
 
 
@@ -83,7 +87,7 @@ class EnnemyType:
 
 EnnemyType(2,2,2,0,(16,0))
 EnnemyType(3,2,1,0,(32,0))
-EnnemyType(1,3,2,0,(48,0))
+EnnemyType(1,3,3,0,(48,0))
 
 class Ennemy(Entity):
     instances = []
@@ -209,8 +213,12 @@ class Main:
     @property
     def current_vague(self):return vagues[self.vagueno]
     
-    def start_wave(self):pass
-
+    def intro(self):
+        px.cls(0)
+        px.text(50,100,"Pixare Games presents",7)
+    
+    def intro2 (self):
+        px.text(50,150,"Pixel Armada",7)
 
     
     def handle_input(self):
@@ -227,26 +235,27 @@ class Main:
 
 
     def update (self):
-        self.update_waves()
-        self.handle_input()
-        self.player.update()
-        for ennemy in Ennemy.instances:
-            #print(ennemy.pos,self.player.pos)
-            ennemy.update()
-            if ennemy.y>0 and px.rndi(0,200) == 0:
-                Bullet(False,(ennemy.x+(ennemy.width//2)-4,ennemy.y+ennemy.height))
-        for bullet in Bullet.instances:
-            bullet.update()
-        for explosion in Explosion.instances:
-            explosion.update()
-        for obstacle in Obstacle.instances:
-            obstacle.update()
-        if len(Ennemy.instances) == 0:
-            self.vagueno +=1
-            Ennemy.instances = self.current_vague
-            Ennemy.speedmod+=1
-            Bullet.speed +=1
-            self.player.pv+=5
+        if px.frame_count>=400:
+            self.update_waves()
+            self.handle_input()
+            self.player.update()
+            for ennemy in Ennemy.instances:
+                #print(ennemy.pos,self.player.pos)
+                ennemy.update()
+                if ennemy.y>0 and px.rndi(0,200) == 0:
+                    Bullet(False,(ennemy.x+(ennemy.width//2)-4,ennemy.y+ennemy.height))
+            for bullet in Bullet.instances:
+                bullet.update()
+            for explosion in Explosion.instances:
+                explosion.update()
+            for obstacle in Obstacle.instances:
+                obstacle.update()
+            if len(Ennemy.instances) == 0:
+                self.vagueno +=1
+                Ennemy.instances = self.current_vague
+                Ennemy.speedmod+=1
+                Bullet.speed +=1
+                self.player.pv+=5
     
     def init_waves(self):
         self.waves = []
@@ -274,28 +283,32 @@ class Main:
                 px.blt(j*16,((i*16)+self.wave_offset-16),1,self.waves[i][j],0,16,16)
    
     def draw (self):
-        self.draw_waves()
-        for ennemy in Ennemy.instances:
-            ennemy.draw()
-        for bullet in Bullet.instances:
-            bullet.draw()
-        for explosion in Explosion.instances:
-            explosion.draw()
-        for obstacle in Obstacle.instances:
-            obstacle.draw()
-        self.player.draw()
-        px.text(0,0,"Vies : "+str(self.player.pv),0)
-        px.text(0,10,"Score : "+str(Ennemy.killed),0)
-        px.text(0,10,"Round : "+str(self.vagueno),0)
+        if px.frame_count<200:
+            self.intro()
+        elif px.frame_count<400:
+            self.intro2()
+        else:
+            self.draw_waves()
+            for ennemy in Ennemy.instances:
+                ennemy.draw()
+            for bullet in Bullet.instances:
+                bullet.draw()
+            for explosion in Explosion.instances:
+                explosion.draw()
+            for obstacle in Obstacle.instances:
+                obstacle.draw()
+            self.player.draw()
+            px.text(0,0,"Vies : "+str(self.player.pv),0)
+            px.text(0,10,"Score : "+str(Ennemy.killed),0)
+            px.text(0,20,"Round : "+str(self.vagueno),0)
 
 
     def run (self):
-        px.init(256,256,title="Nom",fps=60,quit_key=px.KEY_Q)
+        px.init(256,256,title="Pixel Armada",fps=60,quit_key=px.KEY_Q)
         px.load("theme.pyxres")
         self.init_waves()
         px.run(self.update,self.draw)
         px.quit()
-        print("Score : "+Ennemy.killed)
 
 if __name__ == "__main__":
     Jeu = Main()
