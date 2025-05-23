@@ -28,6 +28,9 @@ class Entity:
 
     def draw(self):
         self.sprite.draw(self.x,self.y)
+    
+    def check_collision(self,entity):
+        return (self.x<entity.x and self.x+self.width>entity.x and self.y>entity.y and self.y+self.height<entity.y) or (self.x>entity.x and self.x<entity.x+entity.width and self.y<entity.y and self.y>entity.y+entity.height)
 
 
 class Player(Entity):
@@ -55,6 +58,14 @@ class Ennemy(Entity):
         self.type:EnnemyType = EnnemyType.instances[type-1]
         super().__init__(startx,0,16,16,self.type.maxpv,self.type.sprite)
         Ennemy.instances.append(self)
+    
+    def damage (self,damage):
+        self.pv-=damage
+        if self.pv<=0:
+            self.destroy()
+    
+    def destroy(self):
+        Ennemy.instances.remove(self)
 
 vague1 = [Ennemy(2,128)]
 vagues = [None,vague1]
@@ -85,12 +96,16 @@ class Main:
 
     def update (self):
         self.handle_input()
+        for ennemy in Ennemy.instances:
+            print(ennemy.pos,self.player.pos)
+            if self.player.check_collision(ennemy):
+                print("1")
 
     def draw (self):
         px.cls(6)
         self.player.draw()
         for ennemy in Ennemy.instances:
-            ennemy.draw()
+            ennemy.sprite.draw(50,50)
 
     def run (self):
         px.init(256,256,title="Nom",fps=60,quit_key=px.KEY_Q)
