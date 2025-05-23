@@ -73,7 +73,7 @@ class Player(Entity):
         if self.pv<=0:
             Player.dead=True
             Explosion(self.x,self.y)
-            print("Votre score : ",Ennemy.killed)
+            print("Défaite... Votre score est : ",Ennemy.killed)
             px.quit()
 
 
@@ -213,6 +213,17 @@ class Main:
     
     @property
     def current_vague(self):return vagues[self.vagueno]
+
+    def next_vague(self):
+        if self.vagueno <=len(vagues)-1:
+            self.vagueno +=1
+            Ennemy.instances = self.current_vague
+            Ennemy.speedmod+=1
+            Bullet.speed +=1
+            self.player.pv+=5
+        else:
+            print("Victoire ! Votre score est : "+Ennemy.killed)
+            px.quit()
     
     def intro(self):
         px.cls(0)
@@ -249,11 +260,7 @@ class Main:
             for obstacle in Obstacle.instances:
                 obstacle.update()
             if len(Ennemy.instances) == 0:
-                self.vagueno +=1
-                Ennemy.instances = self.current_vague
-                Ennemy.speedmod+=1
-                Bullet.speed +=1
-                self.player.pv+=5
+                self.next_vague()
     
     def init_waves(self):
         self.waves = []
