@@ -122,7 +122,10 @@ class Bullet(Entity):
         Bullet.instances.append(self)
     
     def update (self):
-        self.y-=3
+        if self.friendly:
+            self.y-=3
+        else:
+            self.y+=3
     
     def destroy (self):
         Bullet.instances.remove(self)
@@ -164,6 +167,8 @@ class Main:
         for ennemy in Ennemy.instances:
             #print(ennemy.pos,self.player.pos)
             ennemy.update()
+            if ennemy.y>0 and px.rndi(0,60) == 0:
+                Bullet(False,(ennemy.x+(ennemy.width//2)-4,ennemy.y+ennemy.height))
         for bullet in Bullet.instances:
             bullet.update()
     
@@ -172,7 +177,7 @@ class Main:
         for i in range(16):
             self.waves.append([])
             for j in range(16):
-                wavex = px.rndi(0,3)*16
+                wavex = px.rndi(0,2)*16
                 self.waves[i].append(wavex)
         self.wave_offset=0
     
@@ -183,7 +188,7 @@ class Main:
             self.waves.pop()
             newrow=[]
             for i in range(16):
-                newrow.append(px.rndi(0,3)*16)
+                newrow.append(px.rndi(0,2)*16)
             self.waves.insert(0,newrow)
 
     
