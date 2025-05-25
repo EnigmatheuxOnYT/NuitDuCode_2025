@@ -45,8 +45,8 @@ class Player(Entity):
     def move(self,modx,mody):
         self.x+=modx
         self.y+=mody
-        if self.x>250:
-            self.x=250
+        if self.x>240:
+            self.x=240
         elif self.x<0:
             self.x=0
         if self.y>224:
