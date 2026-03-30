@@ -1,69 +1,62 @@
 Piksare Games presents
 
-                    P I X E L   A R M A D A
+                    PIXEL ARMADA
 
              A game by Ahmed-Adam REZKALLAH  
                  & Clément ROUX-BENABOU
 
-------------------------------------------------------------
+---
 
-⚓ Comment jouer ?
+### Comment jouer ?
 
-Pour jouer, lancez le fichier 'main.py' dans n’importe quel IDE compatible avec Python.
+Pour jouer au jeu, il suffit de lancer le fichier **[main.py](main.py)** avec Python depuis votre IDE préféré (VS Code, PyCharm, etc.).
 
-🎮 Contrôles :
-- ZQSD ou Flèches directionnelles : déplacer votre navire
-- Espace : tirer un projectile pour détruire les ennemis
+---
 
-🎯 Objectif :
-Tirez sur les navires ennemis pour marquer des points. Évitez les rochers et les îles !
+### Contrôles
 
-------------------------------------------------------------
+* **ZQSD** ou **flèches directionnelles** : déplacer le navire
+* **Espace** : tirer
 
-🛳 Types de navires ennemis :
+---
 
-1. Patrouilleur (moyen)
-   - Vitesse : moyenne
-   - Dégâts : moyens
-   - Points de vie : moyens
+### Objectif
 
-2. Éclaireur (rapide)
-   - Vitesse : élevée
-   - Dégâts : élevés
-   - Points de vie : faibles
+Détruisez les navires ennemis pour gagner des points tout en évitant les rochers et les îles. Si vous vous cognez, vous serez ralenti et vous risquez de vous faire rattraper par les ennemis.
 
-3. Destroyer (lent)
-   - Vitesse : faible
-   - Dégâts : faibles
-   - Points de vie : élevés
+---
 
-⚠️ Faites attention aux rochers et aux îles : les collisions vous ralentissent ou peuvent vous coûter la partie !
+### Types de navires ennemis
 
-------------------------------------------------------------
+**Patrouilleur**
+Navire équilibré, ni trop rapide ni trop résistant, mais dangereux s'il est ignoré.
 
-📖 L'Histoire :
+**Éclaireur**
+Navire très rapide, mais avec peu de points de vie. En revanche, il fait assez mal.
 
-L’année est 2173.
+**Destroyer**
+Très résistant mais lent et peu dangereux seul.
 
-Les océans ont recouvert la majorité des continents, forçant
-l’humanité à survivre sur des archipels artificiels et des
-cités flottantes. Dans ce monde post-apocalyptique, les
-dernières flottes militaires sillonnent les eaux pour le
-contrôle des routes maritimes et des ressources.
+---
 
-Vous êtes le capitaine d’un cuirassé de l’Armada,
-une force navale libre et redoutée. Entre stratégie,
-courage et tir de précision, votre rôle est de dominer
-les mers, affronter des adversaires rusés, et défendre
-votre bannière.
+### Obstacles
 
-Chaque affrontement est une bataille d’esprit, où
-le moindre faux pas peut vous coûter votre navire.
-Préparez-vous à commander, à esquiver, à frapper
-et à survivre.
+Faites attention aux **rochers** et aux **îles** : les collisions vous ralentissent et peuvent vous mettre en mauvaise position.
 
-🌊 La guerre navale commence ici.
+---
 
-------------------------------------------------------------
+### Histoire
 
-Piksare Games © 2025
+Année 2173.
+Après la montée des eaux, la majorité des continents a disparu.
+L'humanité vit désormais sur des archipels artificiels et des villes flottantes. Les ressources sont rares et les océans sont devenus des zones de guerre.
+
+Vous incarnez le capitaine d'un navire de l'**Armada**, une flotte libre qui se bat pour le contrôle des routes maritimes. Votre objectif : survivre, détruire les flottes ennemies et imposer votre domination sur les mers.
+
+Chaque combat compte. Une mauvaise manœuvre peut vous coûter la partie.
+
+**La guerre navale commence maintenant.**
+
+---
+
+**Piksare Games © 2025**
