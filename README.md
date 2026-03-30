@@ -1,13 +1,12 @@
-Piksare Games presents
+# PIXEL ARMADA
 
-                    PIXEL ARMADA
-
-             A game by Ahmed-Adam REZKALLAH  
-                 & Clément ROUX-BENABOU
+> Projet développé par Ahmed-Adam REZKALLAH & Clément ROUX--BENABOU en 6 heures pour la Nuit du Code 2025, puis légèrement amélioré après la fin du concours.
 
 ---
 
 ### Comment jouer ?
+
+![Bandeau](PixelArmada.png)
 
 Pour jouer au jeu, il suffit de lancer le fichier **[main.py](main.py)** avec Python depuis votre IDE préféré (VS Code, PyCharm, etc.).
 
