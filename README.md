@@ -1,12 +1,9 @@
 # PIXEL ARMADA
 
 > Projet développé par Ahmed-Adam REZKALLAH & Clément ROUX--BENABOU en 6 heures pour la Nuit du Code 2025, puis légèrement amélioré après la fin du concours.
-
----
+![Bandeau](PixelArmada.png)
 
 ### Comment jouer ?
-
-![Bandeau](PixelArmada.png)
 
 Pour jouer au jeu, il suffit de lancer le fichier **[main.py](main.py)** avec Python depuis votre IDE préféré (VS Code, PyCharm, etc.).
 
