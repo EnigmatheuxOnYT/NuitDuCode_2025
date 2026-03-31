@@ -8,20 +8,14 @@
 
 Pour jouer au jeu, il suffit de lancer le fichier **[main.py](main.py)** avec Python depuis votre IDE préféré (VS Code, PyCharm, etc.).
 
----
-
 ### Contrôles
 
 * **ZQSD** ou **flèches directionnelles** : déplacer le navire
 * **Espace** : tirer
 
----
-
 ### Objectif
 
-Détruisez les navires ennemis pour gagner des points tout en évitant les rochers et les îles. Si vous vous cognez, vous serez ralenti et vous risquez de vous faire rattraper par les ennemis.
-
----
+Détruisez les navires ennemis pour gagner des points tout en évitant les rochers et les îles.
 
 ### Types de navires ennemis
 
@@ -34,13 +28,9 @@ Navire très rapide, mais avec peu de points de vie. En revanche, il fait assez 
 **Destroyer**
 Très résistant mais lent et peu dangereux seul.
 
----
-
 ### Obstacles
 
-Faites attention aux **rochers** et aux **îles** : les collisions vous ralentissent et peuvent vous mettre en mauvaise position.
-
----
+Faites attention aux **rochers** et aux **îles**.
 
 ### Histoire
 
